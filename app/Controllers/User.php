@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
+use Config\Services;
+use ReflectionException;
 
 class User extends BaseController
 {
@@ -24,6 +26,15 @@ class User extends BaseController
         return view('users/login', $data);
     }
 
+    public function register(): string
+    {
+        $data = [
+            'title' => 'Register',
+            'validation' => Services::validation()
+        ];
+        return view('users/register', $data);
+    }
+
     public function loginVerify(): RedirectResponse
     {
         $session = session();
@@ -35,7 +46,7 @@ class User extends BaseController
 
         $userDb = $this->userModel->where('username', $userRequest['username'])->first();
         if ($userDb) {
-            $isPasswordVerify = password_verify($userRequest['password'], $userDb['password']);
+            $isPasswordVerify = password_verify($userRequest['password'], $userDb['password_hash']);
 
             if ($isPasswordVerify) {
                 $session_data = [
@@ -52,6 +63,39 @@ class User extends BaseController
             $session->setFlashData('msg', 'Username not found');
         }
 
+        return redirect()->to('/login');
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function registerVerify(): RedirectResponse
+    {
+        $rules = [
+            'username' => "required|is_unique[users.username]",
+            'password' => 'required|min_length[8]|max_length[16]',
+            'email' => "required|valid_email|is_unique[users.email]",
+            'name' => 'required|min_length[6]|max_length[255]',
+        ];
+
+        if ($this->validate($rules)) {
+            $data = [
+                'username' => $this->request->getPost('username'),
+                'password_hash' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+                'name' => $this->request->getPost('name'),
+                'email' => $this->request->getPost('email'),
+            ];
+
+            $this->userModel->save($data);
+            return redirect()->to('/login');
+        }
+
+        return redirect()->to('/register')->withInput();
+    }
+
+    public function logout(): RedirectResponse
+    {
+        session()->destroy();
         return redirect()->to('/login');
     }
 }
