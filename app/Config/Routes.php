@@ -23,6 +23,7 @@ $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
 
+
 /*
  * --------------------------------------------------------------------
  * Route Definitions
@@ -37,6 +38,7 @@ $routes->post('/login', 'User::loginVerify');
 $routes->get('/register', 'User::register');
 $routes->post('/register', 'User::registerVerify');
 $routes->get('/logout', 'User::logout');
+$routes->get('/dashboard', 'User::dashboard');
 
 /*
  * --------------------------------------------------------------------
