@@ -98,4 +98,14 @@ class User extends BaseController
         session()->destroy();
         return redirect()->to('/login');
     }
+
+    public function dashboard(): RedirectResponse
+    {
+        if (!(session()->has('logged_in') && (session()->get('logged_in') === true))) {
+            return redirect()->to('/login');
+        }
+
+        $data = ['title' => 'Dashboard'];
+        return view('users/dashboard', $data);
+    }
 }
