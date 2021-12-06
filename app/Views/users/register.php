@@ -7,20 +7,20 @@
             <h1 class="h3 mb-3 fw-normal">Register</h1>
 
             <div class="form-floating">
-                <input type="text" name="username" class="form-control" id="floatingInput" placeholder="tugas.pweb">
+                <input required type="text" name="username" class="form-control" id="floatingInput" placeholder="tugas.pweb">
                 <label for="floatingInput">Username</label>
             </div>
             <div class="form-floating">
-                <input type="password" name="password" class="form-control" id="floatingPassword"
+                <input required minlength="8" maxlength="16" type="password" name="password" class="form-control" id="floatingPassword"
                        placeholder="Password">
                 <label for="floatingPassword">Password</label>
             </div>
             <div class="form-floating">
-                <input type="text" name="name" class="form-control" id="floatingName" placeholder="name">
+                <input required type="text" name="name" class="form-control" id="floatingName" placeholder="name">
                 <label for="name">Name</label>
             </div>
             <div class="form-floating">
-                <input type="email" name="email" class="form-control" id="floatingemail" placeholder="email">
+                <input required type="email" name="email" class="form-control" id="floatingemail" placeholder="email">
                 <label for="email">Email</label>
             </div>
 
