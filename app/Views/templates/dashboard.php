@@ -15,9 +15,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
 
     <!-- My Style -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="<?= base_url("styles.css")?>">
 
-    <title>Kelompok 7</title>
+    <title><?= $title ?></title>
 </head>
 
 <?php $this->renderSection('content'); ?>

@@ -1,0 +1,36 @@
+body {
+  font-family: "Roboto", sans-serif;
+}
+.profile-img {
+  width: 15em;
+  border-radius: 100%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.btn-edit {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.icon {
+  display: flex;
+  margin: auto;
+  width: 12%;
+  justify-content: space-around;
+  align-items: center;
+}
+.icon a {
+  text-decoration: none;
+  transition: 0.4s;
+}
+.icon a:hover img {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.icon img {
+  width: 1.7em;
+}
+
+a.icon {
+  width: 9%;
+}

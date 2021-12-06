@@ -22,6 +22,7 @@ class User extends BaseController
             return redirect()->to('/dashboard');
         }
 
+
         $data = ['title' => 'Login'];
         return view('users/login', $data);
     }
@@ -99,13 +100,31 @@ class User extends BaseController
         return redirect()->to('/login');
     }
 
-    public function dashboard(): RedirectResponse
+    public function dashboard()
     {
         if (!(session()->has('logged_in') && (session()->get('logged_in') === true))) {
             return redirect()->to('/login');
         }
 
-        $data = ['title' => 'Dashboard'];
+        $userId = session()->get('userId');
+        $dataDB = $this->userModel->where('id', $userId)->first();
+        $data = [
+            'title' => 'Dashboard',
+            'username' => $dataDB['username'],
+            'name' => $dataDB['name'],
+            'email' => $dataDB['email'],
+            'gender' => $dataDB['gender'],
+            'description' => $dataDB['description'],
+            'university' => $dataDB['university'],
+            'major' => $dataDB['major'],
+            'linkedin_account' => $dataDB['linkedin_account'],
+            'linkedin_url' => $dataDB['linkedin_url'],
+            'whatsapp_account' => $dataDB['whatsapp_account'],
+            'github_account' => $dataDB['github_account'],
+        ];
+
+        $data["image_url"] = $data["image_url"] ?? 'default.jpg';
+
         return view('users/dashboard', $data);
     }
 }

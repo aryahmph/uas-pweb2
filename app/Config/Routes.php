@@ -38,7 +38,7 @@ $routes->post('/login', 'User::loginVerify');
 $routes->get('/register', 'User::register');
 $routes->post('/register', 'User::registerVerify');
 $routes->get('/logout', 'User::logout');
-$routed->get('/dashboard', 'User::dashboard');
+$routes->get('/dashboard', 'User::dashboard');
 
 /*
  * --------------------------------------------------------------------
