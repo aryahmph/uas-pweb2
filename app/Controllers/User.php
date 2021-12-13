@@ -76,7 +76,7 @@ class User extends BaseController
             'username' => "required|is_unique[users.username]",
             'password' => 'required|min_length[8]|max_length[16]',
             'email' => "required|valid_email|is_unique[users.email]",
-            'name' => 'required|min_length[6]|max_length[255]',
+            'name' => 'required|min_length[6]|max_length[255]'
         ];
 
         if ($this->validate($rules)) {
@@ -84,7 +84,7 @@ class User extends BaseController
                 'username' => $this->request->getPost('username'),
                 'password_hash' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
                 'name' => $this->request->getPost('name'),
-                'email' => $this->request->getPost('email'),
+                'email' => $this->request->getPost('email')
             ];
 
             $this->userModel->save($data);
@@ -120,11 +120,81 @@ class User extends BaseController
             'linkedin_account' => $dataDB['linkedin_account'],
             'linkedin_url' => $dataDB['linkedin_url'],
             'whatsapp_account' => $dataDB['whatsapp_account'],
-            'github_account' => $dataDB['github_account'],
+            'github_account' => $dataDB['github_account']
         ];
 
         $data["image_url"] = $data["image_url"] ?? 'default.jpg';
 
         return view('users/dashboard', $data);
+    }
+
+    public function update()
+    {
+        // Validate has login or not
+        if (!(session()->has('logged_in') && (session()->get('logged_in') === true))) {
+            return redirect()->to('/login');
+        }
+
+        $userId = session()->get('userId');
+        $dataDB = $this->userModel->where('id', $userId)->first();
+
+        $data = [
+            'title' => 'Update Data',
+            'validation' => Services::validation(),
+            'username' => $dataDB['username'],
+            'name' => $dataDB['name'],
+            'email' => $dataDB['email'],
+            'gender' => $dataDB['gender'],
+            'description' => $dataDB['description'],
+            'university' => $dataDB['university'],
+            'major' => $dataDB['major'],
+            'linkedin_account' => $dataDB['linkedin_account'],
+            'linkedin_url' => $dataDB['linkedin_url'],
+            'whatsapp_account' => $dataDB['whatsapp_account'],
+            'github_account' => $dataDB['github_account']
+        ];
+
+        return view('users/update', $data);
+    }
+
+    public function updateVerify()
+    {
+        // Validate has login or not
+        if (!(session()->has('logged_in') && (session()->get('logged_in') === true))) {
+            return redirect()->to('/login');
+        }
+
+        // Validation rules
+        // $rules = [
+        //     'username' => "required|is_unique[users.username]",
+        //     'password' => 'required|min_length[8]|max_length[16]',
+        //     'email' => "required|valid_email|is_unique[users.email]",
+        //     'name' => 'required|min_length[6]|max_length[255]'
+        // ];
+
+        $data = [
+            'username' => $this->request->getPost('username'),
+            'name' => $this->request->getPost('name'),
+            'email' => $this->request->getPost('email'),
+            'gender' => $this->request->getPost('gender'),
+            'description' => $this->request->getPost('description'),
+            'university' => $this->request->getPost('university'),
+            'major' => $this->request->getPost('major'),
+            'linkedin_account' => $this->request->getPost('linkedin_account'),
+            'linkedin_url' => $this->request->getPost('linkedin_url'),
+            'whatsapp_account' => $this->request->getPost('whatsapp_account'),
+            'github_account' => $this->request->getPost('github_account')
+        ];
+
+        // if ($this->validate($rules)) {
+        //     // Submit data
+        //     $this->userModel->update(session()->get('userId'), $data);
+        //     return redirect()->to('/dashboard');
+        // } else {
+        //     return redirect()->to('/update')->withInput();
+        // }
+
+        $this->userModel->update(session()->get('userId'), $data);
+        return redirect()->to('/dashboard');
     }
 }
