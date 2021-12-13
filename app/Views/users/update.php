@@ -36,6 +36,10 @@
                 <h2 class="mt-5 mb-4">Update Data</h2>
                 <form action="/update" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
+                        <label for="username" class="form-label">Username : </label>
+                        <input required type="text" class="form-control" id="username" name="username" value="<?= $username ?>">
+                    </div>
+                    <div class="mb-3">
                         <label for="name" class="form-label">Name : </label>
                         <input required type="text" class="form-control" id="name" name="name" value="<?= $name ?>">
                     </div>
