@@ -123,7 +123,7 @@ class User extends BaseController
             'github_account' => $dataDB['github_account']
         ];
 
-        $data["image_url"] = $data["image_url"] ?? 'default.jpg';
+        $data["image_url"] = $dataDB["image_url"] ?? 'default.jpg';
 
         return view('users/dashboard', $data);
     }
@@ -172,12 +172,16 @@ class User extends BaseController
         //     'name' => 'required|min_length[6]|max_length[255]'
         // ];
 
+        $image = $this->request->getFile('image_url');
+        $image->move('uploads');
+
         $data = [
             'username' => $this->request->getPost('username'),
             'name' => $this->request->getPost('name'),
             'email' => $this->request->getPost('email'),
             'gender' => $this->request->getPost('gender'),
             'description' => $this->request->getPost('description'),
+            'image_url' => $image->getName(),
             'university' => $this->request->getPost('university'),
             'major' => $this->request->getPost('major'),
             'linkedin_account' => $this->request->getPost('linkedin_account'),

@@ -5,7 +5,7 @@
     <!-- Nav -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">AryaHmph</a>
+            <a class="navbar-brand" href="/">AryaHmph</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -55,11 +55,11 @@
                     <div class="mb-3">
                         <label for="gender" class="form-label">Gender : </label>
                         <select class="form-select" id="gender" name="gender">
-                            <?php if ($gender === "Male") { ?>
+                            <?php if ($gender === "male") { ?>
                                 <option selected value="Male">Male</option>
                                 <option value="Female">Female</option>
 
-                            <?php } else if ($gender === "Male") { ?>
+                            <?php } elseif ($gender === "female") { ?>
                                 <option value="Male">Male</option>
                                 <option selected value="Female">Female</option>
                             <?php } else { ?>
@@ -99,7 +99,7 @@
 
                     <div class="mb-3 mt-5">
                         <label for="image" class="form-label">Profile image :</label>
-                        <input class="form-control" type="file" id="image" name="image">
+                        <input class="form-control" type="file" id="image" name="image_url">
                     </div>
 
                     <div class="row">
