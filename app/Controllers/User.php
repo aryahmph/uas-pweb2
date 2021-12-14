@@ -143,6 +143,7 @@ class User extends BaseController
             'validation' => Services::validation(),
             'username' => $dataDB['username'],
             'name' => $dataDB['name'],
+            'password_hash' => $dataDB['password_hash'],
             'email' => $dataDB['email'],
             'gender' => $dataDB['gender'],
             'description' => $dataDB['description'],
@@ -164,41 +165,50 @@ class User extends BaseController
             return redirect()->to('/login');
         }
 
+        $userId = session()->get('userId');
+        $dataDB = $this->userModel->where('id', $userId)->first();
+
         // Validation rules
-        // $rules = [
-        //     'username' => "required|is_unique[users.username]",
-        //     'password' => 'required|min_length[8]|max_length[16]',
-        //     'email' => "required|valid_email|is_unique[users.email]",
-        //     'name' => 'required|min_length[6]|max_length[255]'
-        // ];
-
-        $image = $this->request->getFile('image_url');
-        $image->move('uploads');
-
-        $data = [
-            'username' => $this->request->getPost('username'),
-            'name' => $this->request->getPost('name'),
-            'email' => $this->request->getPost('email'),
-            'gender' => $this->request->getPost('gender'),
-            'description' => $this->request->getPost('description'),
-            'image_url' => $image->getName(),
-            'university' => $this->request->getPost('university'),
-            'major' => $this->request->getPost('major'),
-            'linkedin_account' => $this->request->getPost('linkedin_account'),
-            'linkedin_url' => $this->request->getPost('linkedin_url'),
-            'whatsapp_account' => $this->request->getPost('whatsapp_account'),
-            'github_account' => $this->request->getPost('github_account')
+        $rules = [
+            'username' => "required|is_unique[users.username,id,{$userId}]",
+            'email' => "required|valid_email|is_unique[users.email,id,{$userId}]",
+            'name' => 'required|min_length[6]|max_length[255]'
         ];
 
-        // if ($this->validate($rules)) {
-        //     // Submit data
-        //     $this->userModel->update(session()->get('userId'), $data);
-        //     return redirect()->to('/dashboard');
-        // } else {
-        //     return redirect()->to('/update')->withInput();
-        // }
+        $rulesImage = [
+            'image_url' => [
+                'rules' => 'uploaded[image_url]|max_size[image_url,1024]|is_image[image_url]|mime_in[image_url,image/jpg,image/jpeg,image/png]',
+            ]
+        ];
 
-        $this->userModel->update(session()->get('userId'), $data);
-        return redirect()->to('/dashboard');
+
+
+        if ($this->validate($rules)) {
+            $data = [
+                'username' => $this->request->getPost('username'),
+                'name' => $this->request->getPost('name'),
+                'email' => $this->request->getPost('email'),
+                'gender' => $this->request->getPost('gender'),
+                'description' => $this->request->getPost('description'),
+                'image_url' => $dataDB['image_url'],
+                'university' => $this->request->getPost('university'),
+                'major' => $this->request->getPost('major'),
+                'linkedin_account' => $this->request->getPost('linkedin_account'),
+                'linkedin_url' => $this->request->getPost('linkedin_url'),
+                'whatsapp_account' => $this->request->getPost('whatsapp_account'),
+                'github_account' => $this->request->getPost('github_account')
+            ];
+
+            if ($this->validate($rulesImage)) {
+                $image = $this->request->getFile('image_url');
+                $image->move('uploads');
+                $data['image_url'] = $image->getName();
+            }
+
+            $this->userModel->update(session()->get('userId'), $data);
+            return redirect()->to('/dashboard');
+        } else {
+            return redirect()->to('/update')->withInput();
+        }
     }
 }

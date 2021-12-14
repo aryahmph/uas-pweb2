@@ -45,12 +45,16 @@
                     <a href="<?= "https://github.com/" . $github_account ?>" target="_blank">
                         <img src="<?= base_url("resources/logos_github-icon.png") ?>" alt="github">
                     </a>
-                    <a href="<?= $linkedin_url ?>" target="_blank">
-                        <img src="<?= base_url("resources/logos_linkedin-icon.png") ?>" alt="linkedin">
-                    </a>
-                    <a href="#" target="_blank">
-                        <img src="<?= base_url("resources/logos_whatsapp.png") ?>" alt="whatsapp">
-                    </a>
+                    <?php if (is_null($linkedin_url) || empty($linkedin_url)) { ?>
+                        <a href="https://linkedin.com" target="_blank">
+                        <?php } else { ?>
+                            <a href="<?= $linkedin_url ?>" target="_blank">
+                            <?php } ?>
+                            <img src="<?= base_url("resources/logos_linkedin-icon.png") ?>" alt="linkedin">
+                            </a>
+                            <a href="<?= "https://wa.me/" . $whatsapp_account ?>" target="_blank">
+                                <img src="<?= base_url("resources/logos_whatsapp.png") ?>" alt="whatsapp">
+                            </a>
                 </div>
                 <a href="/update" class="btn btn-outline-secondary btn-sm mt-5 rounded btn-edit icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
@@ -74,7 +78,7 @@
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <?php if (is_null($university) || is_null($major)) { ?>
+                        <?php if (is_null($university) || is_null($major) || empty($university) || empty($major)) { ?>
                             <p class="p-3">Please complete your profile in update profile</p>
                         <?php } else { ?>
                             <p class="p-3">
@@ -90,6 +94,9 @@
                         <ul>
                             <?php if (is_null($university) || is_null($major)) { ?>
                                 <li>Please complete your profile in update profile</li>
+                            <?php } elseif (empty($university) || empty($major)) { ?>
+                                <li>Name : <?= $name ?></li>
+                                <li>Gender : <?= $gender ?></li>
                             <?php } else { ?>
                                 <li>Name : <?= $name ?></li>
                                 <li>University : <?= $university ?></li>
@@ -101,7 +108,7 @@
                     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                         <h6 class="mt-4">Find me on :</h6>
                         <ul>
-                            <?php if (is_null($university) || is_null($major)) { ?>
+                            <?php if (is_null($linkedin_account) || is_null($github_account) || is_null($whatsapp_account) || empty($linkedin_account) || empty($github_account) || empty($whatsapp_account)) { ?>
                                 <li>Please complete your profile in update profile</li>
                             <?php } else { ?>
                                 <li>Email : <?= $email ?></li>

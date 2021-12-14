@@ -16,7 +16,7 @@
                 <label for="floatingPassword">Password</label>
             </div>
             <div class="form-floating">
-                <input required type="text" name="name" class="form-control" id="floatingName" placeholder="name">
+                <input required minlength="6" maxlength="255" type="text" name="name" class="form-control" id="floatingName" placeholder="name">
                 <label for="name">Name</label>
             </div>
             <div class="form-floating">

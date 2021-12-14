@@ -41,11 +41,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="name" class="form-label">Name : </label>
-                        <input required type="text" class="form-control" id="name" name="name" value="<?= $name ?>">
+                        <input required minlength="6" maxlength="255" type="text" class="form-control" id="name" name="name" value="<?= $name ?>">
                     </div>
+
                     <div class="mb-3">
                         <label for="description" class="form-label">Description : </label>
-                        <input required type="text" class="form-control" id="description" name="description" value="<?= $description ?>">
+                        <input type="text" class="form-control" id="description" name="description" value="<?= $description ?>">
                     </div>
                     <div class="mb-3">
                         <label for="link" class="form-label">Email : </label>
@@ -72,34 +73,38 @@
 
                     <div class="mb-3 mt-5">
                         <label for="university" class="form-label">University : </label>
-                        <input required type="text" class="form-control" id="university" name="university" value="<?= $university ?>">
+                        <input type="text" class="form-control" id="university" name="university" value="<?= $university ?>">
                     </div>
                     <div class="mb-3">
                         <label for="major" class="form-label">Major : </label>
-                        <input required type="text" class="form-control" id="major" name="major" value="<?= $major ?>">
+                        <input type="text" class="form-control" id="major" name="major" value="<?= $major ?>">
                     </div>
-
 
                     <div class="mb-3 mt-5">
                         <label for="linkedinAccount" class="form-label">LinkedIn Name : </label>
-                        <input required type="text" class="form-control" id="linkedinAccount" name="linkedin_account" value="<?= $linkedin_account ?>">
+                        <input type="text" class="form-control" id="linkedinAccount" name="linkedin_account" value="<?= $linkedin_account ?>">
                     </div>
                     <div class="mb-3">
                         <label for="linkedinURL" class="form-label">LinkedIn URL : </label>
-                        <input required type="text" class="form-control" id="linkedinURL" name="linkedin_url" value="<?= $linkedin_url ?>">
+                        <input type="text" class="form-control" id="linkedinURL" name="linkedin_url" value="<?= $linkedin_url ?>">
                     </div>
                     <div class="mb-3">
                         <label for="githubAccount" class="form-label">GitHub Name : </label>
-                        <input required type="text" class="form-control" id="githubAccount" name="github_account" value="<?= $github_account ?>">
+                        <input type="text" class="form-control" id="githubAccount" name="github_account" value="<?= $github_account ?>">
                     </div>
                     <div class="mb-3">
                         <label for="whatsappAccount" class="form-label">Whatsapp : </label>
-                        <input required type="text" class="form-control" id="whatsappAccount" name="whatsapp_account" value="<?= $whatsapp_account ?>">
+                        <input type="text" class="form-control" id="whatsappAccount" name="whatsapp_account" value="<?= $whatsapp_account ?>">
                     </div>
 
-                    <div class="mb-3 mt-5">
-                        <label for="image" class="form-label">Profile image :</label>
-                        <input class="form-control" type="file" id="image" name="image_url">
+                    <div class="mt-3">
+                        <label for="image_url" class="form-label">
+                            Upload Photo Profile :
+                        </label>
+                        <input class="form-control <?= ($validation->hasError('image_url')) ? 'is-invalid' : ''; ?>" type="file" id="image_url" name="image_url" />
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('image_url'); ?>
+                        </div>
                     </div>
 
                     <div class="row">
