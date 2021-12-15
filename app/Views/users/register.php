@@ -1,6 +1,7 @@
 <?php $this->extend('templates/login_register') ?>
 <?php $this->section('content') ?>
-    <body class="text-center">
+
+<body class="text-center">
     <p><?= $validation->listErrors() ?></p>
     <main class="form-signin">
         <form action="/register" method="post">
@@ -11,12 +12,11 @@
                 <label for="floatingInput">Username</label>
             </div>
             <div class="form-floating">
-                <input required minlength="8" maxlength="16" type="password" name="password" class="form-control" id="floatingPassword"
-                       placeholder="Password">
+                <input required minlength="8" maxlength="16" type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
                 <label for="floatingPassword">Password</label>
             </div>
             <div class="form-floating">
-                <input required type="text" name="name" class="form-control" id="floatingName" placeholder="name">
+                <input required minlength="6" maxlength="255" type="text" name="name" class="form-control" id="floatingName" placeholder="name">
                 <label for="name">Name</label>
             </div>
             <div class="form-floating">
@@ -25,8 +25,11 @@
             </div>
 
             <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Register</button>
+            <a href="/login" class="w-100">
+                <p class="mt-2 text-secondary">Login</p>
+            </a>
             <p class="mt-5 mb-3 text-muted">&copy; Achmad Arta Arya | Triple A</p>
         </form>
     </main>
-    </body>
+</body>
 <?php $this->endSection() ?>

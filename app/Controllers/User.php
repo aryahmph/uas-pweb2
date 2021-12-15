@@ -76,7 +76,7 @@ class User extends BaseController
             'username' => "required|is_unique[users.username]",
             'password' => 'required|min_length[8]|max_length[16]',
             'email' => "required|valid_email|is_unique[users.email]",
-            'name' => 'required|min_length[6]|max_length[255]',
+            'name' => 'required|min_length[6]|max_length[255]'
         ];
 
         if ($this->validate($rules)) {
@@ -84,7 +84,7 @@ class User extends BaseController
                 'username' => $this->request->getPost('username'),
                 'password_hash' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
                 'name' => $this->request->getPost('name'),
-                'email' => $this->request->getPost('email'),
+                'email' => $this->request->getPost('email')
             ];
 
             $this->userModel->save($data);
@@ -120,11 +120,95 @@ class User extends BaseController
             'linkedin_account' => $dataDB['linkedin_account'],
             'linkedin_url' => $dataDB['linkedin_url'],
             'whatsapp_account' => $dataDB['whatsapp_account'],
-            'github_account' => $dataDB['github_account'],
+            'github_account' => $dataDB['github_account']
         ];
 
-        $data["image_url"] = $data["image_url"] ?? 'default.jpg';
+        $data["image_url"] = $dataDB["image_url"] ?? 'default.jpg';
 
         return view('users/dashboard', $data);
+    }
+
+    public function update()
+    {
+        // Validate has login or not
+        if (!(session()->has('logged_in') && (session()->get('logged_in') === true))) {
+            return redirect()->to('/login');
+        }
+
+        $userId = session()->get('userId');
+        $dataDB = $this->userModel->where('id', $userId)->first();
+
+        $data = [
+            'title' => 'Update Data',
+            'validation' => Services::validation(),
+            'username' => $dataDB['username'],
+            'name' => $dataDB['name'],
+            'password_hash' => $dataDB['password_hash'],
+            'email' => $dataDB['email'],
+            'gender' => $dataDB['gender'],
+            'description' => $dataDB['description'],
+            'university' => $dataDB['university'],
+            'major' => $dataDB['major'],
+            'linkedin_account' => $dataDB['linkedin_account'],
+            'linkedin_url' => $dataDB['linkedin_url'],
+            'whatsapp_account' => $dataDB['whatsapp_account'],
+            'github_account' => $dataDB['github_account']
+        ];
+
+        return view('users/update', $data);
+    }
+
+    public function updateVerify()
+    {
+        // Validate has login or not
+        if (!(session()->has('logged_in') && (session()->get('logged_in') === true))) {
+            return redirect()->to('/login');
+        }
+
+        $userId = session()->get('userId');
+        $dataDB = $this->userModel->where('id', $userId)->first();
+
+        // Validation rules
+        $rules = [
+            'username' => "required|is_unique[users.username,id,{$userId}]",
+            'email' => "required|valid_email|is_unique[users.email,id,{$userId}]",
+            'name' => 'required|min_length[6]|max_length[255]'
+        ];
+
+        $rulesImage = [
+            'image_url' => [
+                'rules' => 'uploaded[image_url]|max_size[image_url,1024]|is_image[image_url]|mime_in[image_url,image/jpg,image/jpeg,image/png]',
+            ]
+        ];
+
+
+
+        if ($this->validate($rules)) {
+            $data = [
+                'username' => $this->request->getPost('username'),
+                'name' => $this->request->getPost('name'),
+                'email' => $this->request->getPost('email'),
+                'gender' => $this->request->getPost('gender'),
+                'description' => $this->request->getPost('description'),
+                'image_url' => $dataDB['image_url'],
+                'university' => $this->request->getPost('university'),
+                'major' => $this->request->getPost('major'),
+                'linkedin_account' => $this->request->getPost('linkedin_account'),
+                'linkedin_url' => $this->request->getPost('linkedin_url'),
+                'whatsapp_account' => $this->request->getPost('whatsapp_account'),
+                'github_account' => $this->request->getPost('github_account')
+            ];
+
+            if ($this->validate($rulesImage)) {
+                $image = $this->request->getFile('image_url');
+                $image->move('uploads');
+                $data['image_url'] = $image->getName();
+            }
+
+            $this->userModel->update(session()->get('userId'), $data);
+            return redirect()->to('/dashboard');
+        } else {
+            return redirect()->to('/update')->withInput();
+        }
     }
 }
